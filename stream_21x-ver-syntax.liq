@@ -1,11 +1,18 @@
+### Liquidsoap 2.1.x Syntax ###
+
+#canvas & fps settings
+settings.frame.video.width.set(1280)
+settings.frame.video.height.set(720)
+settings.frame.video.framerate.set(30)
+
 #metadata functions
 song_author = ref('')
-def apply_song(m) =
+def apply_artist(m) =
 song_author := m["artist"]
 end
 
 song_title = ref('')
-def apply_song2(m) =
+def apply_title(m) =
 song_title := m["title"]
 end
 
@@ -24,8 +31,8 @@ audio = mksafe(audio)
 background = single("/home/YOUR_NICKNAME/radio/background.gif")
 
 #calling metadata
-audio.on_track(apply_song) 
-audio.on_track(apply_song2) 
+audio.on_track(apply_artist) 
+audio.on_track(apply_title) 
 
 #drawtext
 background = video.add_text(color=0xFFFFFF, font="/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf", speed=0, x=50, y=50, size=26,
@@ -35,7 +42,7 @@ background)
 #mixing sources
 radio = mux_video(video=background, audio)
 
-#rtmp+codec
+#rtmp & codec
 url = "rtmp://localhost/live"
 enc = %ffmpeg(format="flv",
 %video(codec="libx264", width=1280, height=720, pixel_format="yuv420p",
